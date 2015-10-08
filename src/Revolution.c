@@ -526,13 +526,13 @@ void init() {
   display_time(tick_time);
   display_day(tick_time);
   display_date(tick_time);
-  display_seconds(tick_time);
+  //display_seconds(tick_time);
 
   tick_timer_service_subscribe(SECOND_UNIT, handle_second_tick);
 }
 
 void handle_second_tick(struct tm *tick_time, TimeUnits units_changed) {
-  display_seconds(tick_time);
+  //display_seconds(tick_time);
 
   if ((units_changed & MINUTE_UNIT) == MINUTE_UNIT) {
     display_time(tick_time);
