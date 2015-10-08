@@ -146,6 +146,7 @@ void update_second_slot(Slot *second_slot, int digit_value);
 int main(void);
 void init();
 void handle_second_tick(struct tm *tick_time, TimeUnits units_changed);
+void battery_handler(BatteryChargeState charge_state);
 void deinit();
 
 
@@ -526,9 +527,20 @@ void init() {
   display_time(tick_time);
   display_day(tick_time);
   display_date(tick_time);
+  battery_handler(battery_state_service_peek());
   //display_seconds(tick_time);
 
   tick_timer_service_subscribe(SECOND_UNIT, handle_second_tick);
+  battery_state_service_subscribe(battery_handler);
+}
+
+void battery_handler(BatteryChargeState charge_state) {
+    int charge = charge_state.charge_percent;
+	for (int second_slot_number = 1; second_slot_number >= 0; second_slot_number--) {
+    	Slot *second_slot = &second_slots[second_slot_number];
+   	 	update_second_slot(second_slot, charge % 10);
+    	charge = charge / 10;
+  }
 }
 
 void handle_second_tick(struct tm *tick_time, TimeUnits units_changed) {
