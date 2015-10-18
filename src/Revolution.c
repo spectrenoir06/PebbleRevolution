@@ -536,6 +536,8 @@ void init() {
 
 void battery_handler(BatteryChargeState charge_state) {
     int charge = charge_state.charge_percent;
+	if (charge == 100)
+		charge = 99;
 	for (int second_slot_number = 1; second_slot_number >= 0; second_slot_number--) {
     	Slot *second_slot = &second_slots[second_slot_number];
    	 	update_second_slot(second_slot, charge % 10);
